@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #121212; /* Dark grey for the background */
+            color: #ffffff; /* White for the text */
+        }
+        #notification {
+            display: none;
+            position: sticky; /* Sticky positioning */
+            top: 0;
+            right: 0;
+            align-items: center;
+            justify-content: center;
+            background-color: #ff0000; /* Red for the notification background */
+            color: #ffffff; /* White for the notification text */
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        #inputData {
+            resize: both;
+            overflow: auto;
+            width: 300px;
+            height: 200px;
+            background-color: #dbdada; /* Darker grey for the textarea */
+            color: #000; /* White for the text */
+            border-radius: 10px;
+        }
+
+        button[type="submit"] {
+            margin-top: 10px;
+            width: 300px;
+            height: 50px;
+            border-radius: 10px;
+            background-color: #333; /* Darker grey for the button */
+            color: #ffffff; /* White for the text */
+            transition: background-color 0.3s ease; /* Transition for smooth color change */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #666; /* Lighter grey on mouseover */
+        }
+        #copyButton:hover {
+        background-color: #999; /* Lighter grey on mouseover */
+        }
+
+        button[type="submit"]:active {
+            background-color: #999; /* Flash to an even lighter grey on click */
+        }
+        #copyButton:active {
+        background-color: #ccc; /* Flash to an even lighter grey on click */
+        }
+    
+        #copyButton {
+            background-color: #666; /* Dark grey for the button */
+            color: #ffffff; /* White for the text */
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        div, form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #333; /* Darker grey for the div and form */
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1); /* Light grey for the shadow */
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="notification" style="position: sticky; top: 0; right: 0;"></div>
+    <form id="inputForm">
+        <textarea id="inputData" name="input" placeholder="Paste your wave schedule text block 'Wave # | HHMM UTC - Month DD'"></textarea><br>
+        <button type="submit" title="Convert UTC Waves to Discord Epochs">Convert</button>
+    </form>
+    <div id="outputArea" style="position: relative;">
+        <button id="copyButton" style="position: absolute; top: 0; right: 0;" title="Copy to Clipboard">📋</button>
+        <pre id="outputText"></pre>
+    </div>
+    <script>
+        function convertWavesToEpochs(text) {
+            const waveDateTimeRegex = /(wave \d+).*\b(\d{4})\b.*UTC.*\b(\w+)\b (\d{2})/gi;
+            let match;
+            const epochs = [];
+            while ((match = waveDateTimeRegex.exec(text)) !== null) {
+                const waveInfo = match[1];
+                const militaryTime = match[2];
+                const month = match[3];
+                const day = match[4];
+                const hours = parseInt(militaryTime.slice(0, 2), 10);
+                const minutes = parseInt(militaryTime.slice(2, 4), 10);
+                const monthIndex = new Date(Date.parse(month +" 1, 2012")).getMonth();
+                const currentYear = new Date().getFullYear();
+                const timestamp = Date.UTC(currentYear, monthIndex, day, hours, minutes) / 1000;
+                epochs.push([waveInfo, timestamp]);
+            }
+            const formattedEpochs = epochs.map(([waveInfo, epoch]) => {
+                const date = new Date(epoch * 1000);
+                const formattedDate = `<t:${Math.floor(epoch)}:f>`;
+                return waveInfo + ': ' + formattedDate;
+            });
+            return formattedEpochs.join('\n');
+        }
+
+        document.getElementById('inputForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const text = document.getElementById('inputData').value;
+            const notification = document.getElementById('notification');
+            if (text.trim() === '') {
+                notification.innerText = 'No text to convert!';
+                notification.style.display = 'block';
+                setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+            } else {
+                const output = convertWavesToEpochs(text);
+                if (output.trim() === '') {
+                    notification.innerText = 'No waves found!';
+                    notification.style.display = 'block';
+                    setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+                } else {
+                    document.getElementById('outputText').innerText = output;
+                    notification.innerText = 'Conversion completed!';
+                    notification.style.display = 'block';
+                    setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+                }
+            }
+        });
+
+        document.getElementById('copyButton').addEventListener('click', function() {
+            const outputText = document.getElementById('outputText');
+            const notification = document.getElementById('notification');
+            if (outputText.innerText.trim() === '') {
+                notification.innerText = 'No text to copy!';
+                notification.style.display = 'block';
+                setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+            } else {
+                navigator.clipboard.writeText(outputText.innerText).then(() => {
+                    notification.innerText = 'Copied to clipboard!';
+                    notification.style.display = 'block';
+                    setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+                });
+            }
+        });
+    </script>
+</body>
+</html>
