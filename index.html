@@ -13,85 +13,87 @@
             background-color: #121212; /* Dark grey for the background */
             color: #ffffff; /* White for the text */
         }
-        #notification {
-            display: none;
-            position: sticky; /* Sticky positioning */
-            top: 0;
-            right: 0;
-            align-items: center;
-            justify-content: center;
-            background-color: #ff0000; /* Red for the notification background */
-            color: #ffffff; /* White for the notification text */
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
+        label {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 10px;
+            justify-self: start;
         }
-
         #inputData {
             resize: both;
             overflow: auto;
             width: 300px;
             height: 200px;
             background-color: #dbdada; /* Darker grey for the textarea */
-            color: #000; /* White for the text */
+            color: #000;
             border-radius: 10px;
+            padding: 10px;
         }
-
-        button[type="submit"] {
-            margin-top: 10px;
+        #outputText {
+            display: none;
+            position: relative;
             width: 300px;
+            height: 200px;
+            background-color: #dbdada;
+            color: #000;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        button {
+            margin-top: 10px;
+            width: auto;
             height: 50px;
             border-radius: 10px;
-            background-color: #333; /* Darker grey for the button */
-            color: #ffffff; /* White for the text */
-            transition: background-color 0.3s ease; /* Transition for smooth color change */
+            background-color: #333;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
         }
-
-        button[type="submit"]:hover {
-            background-color: #666; /* Lighter grey on mouseover */
+        button:hover {
+            background-color: #666;
         }
-        #copyButton:hover {
-        background-color: #999; /* Lighter grey on mouseover */
+        button:active {
+            background-color: #999;
         }
-
-        button[type="submit"]:active {
-            background-color: #999; /* Flash to an even lighter grey on click */
-        }
-        #copyButton:active {
-        background-color: #ccc; /* Flash to an even lighter grey on click */
-        }
-    
-        #copyButton {
-            background-color: #666; /* Dark grey for the button */
-            color: #ffffff; /* White for the text */
-            border: none;
+        button#copyButton {
+            display: none;
             padding: 5px 10px;
-            border-radius: 5px;
             cursor: pointer;
         }
-        div, form {
+        #outputArea, form {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: #333; /* Darker grey for the div and form */
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1); /* Light grey for the shadow */
+            background-color: #333;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
             padding: 20px;
             margin-bottom: 20px;
             width: 80%;
             max-width: 500px;
             border-radius: 10px;
         }
+        .notification {
+            display: block;
+            position: fixed;
+            right: 10px;
+            background-color: rgba(255, 0, 0, 0.5); /* Red with 50% transparency */
+            color: #000;
+            padding: 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000; /* Ensure it's on top of everything */
+        }
     </style>
 </head>
 <body>
-    <div id="notification" style="position: sticky; top: 0; right: 0;"></div>
     <form id="inputForm">
-        <textarea id="inputData" name="input" placeholder="Paste your wave schedule text block 'Wave # | HHMM UTC - Month DD'"></textarea><br>
+        <label for="inputData">Paste your copied wave schedule here:</label>
+        <textarea id="inputData" name="input" placeholder="Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD"></textarea><br>
         <button type="submit" title="Convert UTC Waves to Discord Epochs">Convert</button>
     </form>
-    <div id="outputArea" style="position: relative;">
-        <button id="copyButton" style="position: absolute; top: 0; right: 0;" title="Copy to Clipboard">📋</button>
+    <div id="outputArea">
+        <button type="button" id="copyButton" title="Copy to Clipboard">Copy</button>
         <pre id="outputText"></pre>
     </div>
     <script>
@@ -118,42 +120,53 @@
             });
             return formattedEpochs.join('\n');
         }
-
+        function createNotification(message) {
+            const notification = document.createElement('div');
+            notification.innerText = message;
+            notification.classList.add('notification');
+            const existingNotifications = document.querySelectorAll('.notification').length;
+            const topPosition = 10 + (existingNotifications * 60); // Adjust the multiplier based on the height of your notifications
+            notification.style.top = `${topPosition}px`;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                document.body.removeChild(notification);
+                updateNotificationPositions();
+            }, 3000); // Hide after 3 seconds
+        }
+        function updateNotificationPositions() {
+            const notifications = document.querySelectorAll('.notification');
+            notifications.forEach((notification, index) => {
+                const topPosition = 10 + (index * 60); // Adjust the multiplier based on the height of your notifications
+                notification.style.top = `${topPosition}px`;
+            });
+        }
         document.getElementById('inputForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const text = document.getElementById('inputData').value;
-            const notification = document.getElementById('notification');
             if (text.trim() === '') {
-                notification.innerText = 'No text to convert!';
-                notification.style.display = 'block';
-                setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+                createNotification('No text to convert!');
             } else {
                 const output = convertWavesToEpochs(text);
                 if (output.trim() === '') {
-                    notification.innerText = 'No waves found!';
-                    notification.style.display = 'block';
-                    setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+                    createNotification('No waves found!');
                 } else {
                     document.getElementById('outputText').innerText = output;
-                    notification.innerText = 'Conversion completed!';
-                    notification.style.display = 'block';
-                    setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+                    document.getElementById('outputText').style.display = 'block';
+                    document.getElementById('copyButton').style.display = 'block';
+                    document.getElementById('inputData').value = '';
+                    createNotification('Conversion completed!');
                 }
             }
         });
-
         document.getElementById('copyButton').addEventListener('click', function() {
             const outputText = document.getElementById('outputText');
-            const notification = document.getElementById('notification');
             if (outputText.innerText.trim() === '') {
-                notification.innerText = 'No text to copy!';
-                notification.style.display = 'block';
-                setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+                createNotification('No text to copy!');
             } else {
                 navigator.clipboard.writeText(outputText.innerText).then(() => {
-                    notification.innerText = 'Copied to clipboard!';
-                    notification.style.display = 'block';
-                    setTimeout(() => notification.style.display = 'none', 2000); // Hide after 2 seconds
+                    createNotification('Copied to clipboard!');
+                    outputText.style.display = 'none';
+                    document.getElementById('copyButton').style.display = 'none';
                 });
             }
         });
