@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             display: flex;
@@ -10,34 +10,31 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #121212; /* Dark grey for the background */
-            color: #ffffff; /* White for the text */
+            background-color: #121212;
+            color: #ffffff;       
         }
-        label {
+        #label {
             font-size: 18px;
             color: #fff;
             margin-bottom: 10px;
             justify-self: start;
         }
-        #inputData {
+        #inputData, #outputText {
+            width: 100%;
+            height: 25vh;
+            max-width: 100%;
+            max-height: 100%;
             resize: both;
             overflow: auto;
-            width: 300px;
-            height: 200px;
-            background-color: #dbdada; /* Darker grey for the textarea */
-            color: #000;
-            border-radius: 10px;
-            padding: 10px;
-        }
-        #outputText {
-            display: none;
-            position: relative;
-            width: 300px;
-            height: 200px;
             background-color: #dbdada;
             color: #000;
             border-radius: 10px;
             padding: 10px;
+            box-sizing: border-box;
+        }
+        #outputText {
+            display: none;
+            position: relative;
         }
         button {
             margin-top: 10px;
@@ -46,7 +43,10 @@
             border-radius: 10px;
             background-color: #333;
             color: #ffffff;
+            padding: 10px 10px;
+            cursor: pointer;
             transition: background-color 0.3s ease;
+            text-transform: uppercase;
         }
         button:hover {
             background-color: #666;
@@ -54,48 +54,122 @@
         button:active {
             background-color: #999;
         }
-        button#copyButton {
-            display: none;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        #outputArea, form {
+        #appArea {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            align-items: stretch;
+            justify-content: space-between;
             background-color: #333;
             box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
             padding: 20px;
             margin-bottom: 20px;
             width: 80%;
-            max-width: 500px;
+            max-width: 1280px;
+            min-width: 300px;
+            max-height: 80vh;
             border-radius: 10px;
         }
         .notification {
             display: block;
             position: fixed;
             right: 10px;
-            background-color: rgba(255, 0, 0, 0.5); /* Red with 50% transparency */
-            color: #000;
+            background-color: rgba(255, 0, 0, 0.5);
+            color: #fff;
             padding: 20px;
             border-radius: 5px;
             font-weight: bold;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
             z-index: 1000; /* Ensure it's on top of everything */
         }
+        #footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        #disclaimer {
+        font-family: Arial, sans-serif;
+        font-size: small;
+        font-style: italic;
+        color: lightgray;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #666;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
-    <form id="inputForm">
-        <label for="inputData">Paste your copied wave schedule here:</label>
-        <textarea id="inputData" name="input" placeholder="Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD"></textarea><br>
-        <button type="submit" title="Convert UTC Waves to Discord Epochs">Convert</button>
-    </form>
-    <div id="outputArea">
-        <button type="button" id="copyButton" title="Copy to Clipboard">Copy</button>
+    <div id="appArea">
+        <p id="label">Paste your copied wave schedule here:</p>
+        <textarea id="inputData" name="input" placeholder="Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD"></textarea>
         <pre id="outputText"></pre>
-    </div>
+        <button type="button" id="actionButton" title="Convert UTC Waves to Discord Epochs">Convert</button>
+     </div>
+     <footer id="footer">
+        <button id="aboutButton">About</button>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h1>Like what we're doing? </h1><p>Here are some ways you can show your appreciation</p>
+                <div class="box"><div class="content">
+                    <a href="https://bit.ly/3TP4yKD" target="_blank" rel="noopener">
+                    <button name="GitHub Sponsor"  type="button">Support on GitHub</button></a></div>
+                </div>
+                <div class="box"><div class="content">
+                    <a href="https://bit.ly/SCOpenDevPatreon" target="_blank" rel="noopener">
+                    <button name="Patreon Sponsor"  type="button">Support on Patreon</button></a></div>
+                </div>
+                <div class="box"><div class="content">
+                    <a href="https://bit.ly/SCBonus5K" target="_blank" rel="noopener">
+                    <button name="RSI Referral"  type="button">Enlist on RSI</button></a></div>
+                </div>
+            </div>
+        </div>
+        <p id="disclaimer">This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners.</p>
+    </footer>
     <script>
         function convertWavesToEpochs(text) {
             const waveDateTimeRegex = /(wave \d+).*\b(\d{4})\b.*UTC.*\b(\w+)\b (\d{2})/gi;
@@ -140,36 +214,69 @@
                 notification.style.top = `${topPosition}px`;
             });
         }
-        document.getElementById('inputForm').addEventListener('submit', function(event) {
+        document.getElementById('actionButton').addEventListener('click', function(event) {
             event.preventDefault();
-            const text = document.getElementById('inputData').value;
-            if (text.trim() === '') {
-                createNotification('No text to convert!');
-            } else {
-                const output = convertWavesToEpochs(text);
-                if (output.trim() === '') {
-                    createNotification('No waves found!');
+            console.log('actionButton clicked');
+            if (this.innerText.trim().toLowerCase() === 'convert') {
+                const text = document.getElementById('inputData').value;
+                if (text.trim() === '') {
+                    createNotification('No text to convert!');
                 } else {
-                    document.getElementById('outputText').innerText = output;
-                    document.getElementById('outputText').style.display = 'block';
-                    document.getElementById('copyButton').style.display = 'block';
-                    document.getElementById('inputData').value = '';
-                    createNotification('Conversion completed!');
+                    const output = convertWavesToEpochs(text);
+                    if (output.trim() === '') {
+                        createNotification('No waves found!');
+                    } else {
+                        document.getElementById('outputText').innerText = output;
+                        createNotification('Conversion completed!');                 
+                        document.getElementById('inputData').style.display = 'none';
+                        document.getElementById('inputData').value = '';
+                        document.getElementById('outputText').style.display = 'block';
+                        this.innerText = 'Copy';
+                        this.title = 'Copy converted wave schedule to clipboard';
+                        document.getElementById('label').innerText = 'Your converted wave schedule:';                       
+                    }
+                }
+            } else if (this.innerText.trim().toLowerCase() === 'copy') {
+                const outputText = document.getElementById('outputText');
+                if (outputText.innerText.trim() === '') {
+                    createNotification('No text to copy!');
+                } else {
+                    navigator.clipboard.writeText(outputText.innerText).then(() => {
+                        createNotification('Copied to clipboard!');
+                        document.getElementById('outputText').style.display = 'none';
+                        document.getElementById('outputText').innerText = '';
+                        document.getElementById('inputData').style.display = 'block';
+                        this.innerText = 'Convert';
+                        this.title = 'Converted wave schedule to Discord Epochs';
+                        document.getElementById('label').innerText = 'Paste your copied wave schedule here:';
+                    });
                 }
             }
         });
-        document.getElementById('copyButton').addEventListener('click', function() {
-            const outputText = document.getElementById('outputText');
-            if (outputText.innerText.trim() === '') {
-                createNotification('No text to copy!');
-            } else {
-                navigator.clipboard.writeText(outputText.innerText).then(() => {
-                    createNotification('Copied to clipboard!');
-                    outputText.style.display = 'none';
-                    document.getElementById('copyButton').style.display = 'none';
-                });
-            }
+        document.getElementById('aboutButton').addEventListener('click', function() {
+            openModal();
         });
+        function openModal() {
+            console.log('openModal');
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+            modal.style.display = "block";
+            span.addEventListener('click', function() {
+                closeModal(modal);
+            });
+            window.addEventListener('click', function(event) {
+                closeOnOutsideClick(event, modal);
+            });
+        }
+        function closeModal(modal) {
+            modal.style.display = "none";
+        }
+        function closeOnOutsideClick(event, modal) {
+            if (event.target == modal) {
+                event.stopPropagation();
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>
