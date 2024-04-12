@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RSI-Waves2Epochs | An SC-Open.dev Project</title>
+<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="img/favicon-64x64.png">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/footer.css">
 </head>
@@ -11,7 +14,7 @@
     <div id="appArea">
         <p id="label">Paste your copied wave schedule here:</p>
         <textarea id="inputData" name="input" placeholder="Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD"></textarea>
-        <pre id="outputText"></pre>
+        <pre id="outputData"></pre>
         <button type="button" id="actionButton" title="Convert UTC Waves to Discord Epochs">Convert</button>
      </div>
      <footer id="footer">
@@ -89,25 +92,25 @@
                     if (output.trim() === '') {
                         createNotification('No waves found!');
                     } else {
-                        document.getElementById('outputText').innerText = output;
+                        document.getElementById('outputData').innerText = output;
                         createNotification('Conversion completed!');                 
                         document.getElementById('inputData').style.display = 'none';
                         document.getElementById('inputData').value = '';
-                        document.getElementById('outputText').style.display = 'block';
+                        document.getElementById('outputData').style.display = 'block';
                         this.innerText = 'Copy';
                         this.title = 'Copy converted wave schedule to clipboard';
                         document.getElementById('label').innerText = 'Your converted wave schedule:';                       
                     }
                 }
             } else if (this.innerText.trim().toLowerCase() === 'copy') {
-                const outputText = document.getElementById('outputText');
+                const outputText = document.getElementById('outputData');
                 if (outputText.innerText.trim() === '') {
                     createNotification('No text to copy!');
                 } else {
                     navigator.clipboard.writeText(outputText.innerText).then(() => {
                         createNotification('Copied to clipboard!');
-                        document.getElementById('outputText').style.display = 'none';
-                        document.getElementById('outputText').innerText = '';
+                        document.getElementById('outputData').style.display = 'none';
+                        document.getElementById('outputData').innerText = '';
                         document.getElementById('inputData').style.display = 'block';
                         this.innerText = 'Convert';
                         this.title = 'Converted wave schedule to Discord Epochs';
