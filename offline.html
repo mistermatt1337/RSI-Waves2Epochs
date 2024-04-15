@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waves2Epochs by SC-Open.dev [Offline Mode]</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="img/favicon-64x64.png">
+    <link rel="apple-touch-icon" href="img/favicon-512x512.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+    <div id="appArea">
+        <p id="label">Paste your copied wave schedule here:</p>
+        <textarea id="inputData" name="input" placeholder="Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD"></textarea>
+        <pre id="outputData"></pre>
+        <button type="button" id="actionButton" title="Convert UTC Waves to Discord Epochs">Convert</button>
+     </div>
+     <footer id="footer">
+        <button id="aboutButton" type="button">About</button>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h1>Like what we're doing? </h1><p>Here are some ways you can show your appreciation</p>
+                <div id="badges">
+                    <button type="button" class="github-org-button" title="GitHub Organization" onclick="window.open('https://github.com/SC-Open')">SC-Open</button>
+                    <button type="button" class="github-repo-button" title="GitHub Repo" onclick="window.open('https://github.com/SC-Open/RSI-Waves2Epochs')">Waves2Epochs Repo</button>
+                    <button type="button" class="github-license-button" title="GitHub License" onclick="window.open('https://github.com/SC-Open/RSI-Waves2Epochs/blob/main/LICENSE')">License</button>
+                    <button type="button" class="github-sponsors-button" title="GitHub Sponsors" onclick="window.open('https://bit.ly/3TP4yKD')">GitHub Sponsors</button>
+                    <button type="button" class="patreon-sponsors-button" title="Patreon Sponsors" onclick="window.open('https://bit.ly/SCOpenDevPatreon')">Patreon Sponsors</button>
+                    <button type="button" class="rsi-referral-button" title="RSI Referral" onclick="window.open('https://bit.ly/SCBonus5K')">RSI Referral</button>
+                    <button type="button" class="discord-button" title="Discord" onclick="window.open('https://bit.ly/SCOpen-Discord')">Discord</button>
+                </div>
+            </div>
+        </div>
+        <p id="disclaimer">This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners.</p>
+    </footer>
+    <script src="js/content.js"></script>
+</body>
+</html>

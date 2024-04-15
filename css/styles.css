@@ -77,3 +77,37 @@ button:active {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     z-index: 1000; /* Ensure it's on top of everything */
 }
+/* Offline Mode CSS styles */
+.github-org-button {
+    background-color: gold;
+    color: black;
+}
+
+.github-repo-button {
+    background-color: darkgray; /* GitHub's official color */
+    color: white;
+}
+.rsi-referral-button {
+    background-color: steelblue;
+    color: white;
+}
+
+.github-license-button {
+    background-color: green;
+    color: white;
+}
+
+.github-sponsors-button {
+    background-color: red;
+    color: white;
+}
+
+.patreon-sponsors-button {
+    background-color: orange;
+    color: white;
+}
+
+.discord-button {
+    background-color: #7289DA; /* Discord's official color */
+    color: white;
+}
