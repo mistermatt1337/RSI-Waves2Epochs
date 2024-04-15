@@ -33,7 +33,10 @@ self.addEventListener('fetch', event => {
       
       // If the fetch was successful, put the new resource in the cache
       const cache = await caches.open(CACHE_NAME);
-      cache.put(event.request, fetchResponse.clone());
+      const cachePut = cache.put(event.request, fetchResponse.clone());
+
+      // Use event.waitUntil() to wait for the caching operation to complete
+      event.waitUntil(cachePut);
 
       return fetchResponse;
     } catch (e) {

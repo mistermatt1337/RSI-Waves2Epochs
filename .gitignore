@@ -1,0 +1,8 @@
+# .gitignore
+
+# Ignore all dot files
+.*
+
+# But not these ones
+!.gitignore
+!.gitattributes
