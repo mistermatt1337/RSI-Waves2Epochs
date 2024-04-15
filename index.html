@@ -4,13 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Waves2Epochs by SC-Open.dev</title>
-<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="64x64" href="img/favicon-64x64.png">
-<link rel="apple-touch-icon" href="img/favicon-512x512.png">
-<link rel="stylesheet" href="css/styles.css">
-<link rel="stylesheet" href="css/footer.css">
-<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="16x16" href="./img/16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./img/32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="./img/48.png">
+<link rel="icon" type="image/png" sizes="64x64" href="./img/64.png">
+<link rel="icon" type="image/png" sizes="128x128" href="./img/128.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./img/192.png">
+<link rel="icon" type="image/png" sizes="256x256" href="./img/256.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./img/512.png">
+<link rel="apple-touch-icon" href="./img/512.png">
+<link rel="stylesheet" href="./css/styles.css">
+<link rel="stylesheet" href="./css/footer.css">
+<link rel="manifest" href="./manifest.webmanifest">
 </head>
 <body>
     <div id="appArea">
@@ -43,8 +48,16 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 const scope = location.hostname === 'sc-open.github.io' ? '/RSI-Waves2Epochs/' : '/';
-                navigator.serviceWorker.register('sw.js', {scope: scope}).then(function(registration) {
+                navigator.serviceWorker.register(scope + 'sw.js', {scope: scope}).then(function(registration) {
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    
+                    // Register background sync
+                    registration.sync.register('fetch-new-content').then(() => {
+                        console.log('Background Sync registered');
+                    }, function(err) {
+                        console.log('Background Sync registration failed: ', err);
+                    });
+    
                 }, function(err) {
                     console.log('ServiceWorker registration failed: ', err);
                 });
