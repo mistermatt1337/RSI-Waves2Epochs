@@ -1,26 +1,27 @@
-let CACHE_NAME = `rsi-waves2epochs`;
+const CACHE_NAME = `rsi-waves2epochs`;
 const OFFLINE_URL = `/offline.html`;
 
 // Use the install event to pre-cache all initial resources.
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
-    // Fetch the manifest file
-    const response = await fetch('/RSI-Waves2Epochs/manifest.webmanifest');
-    const manifest = await response.json();
+    try {
+      // Fetch the manifest file
+      const response = await fetch('/RSI-Waves2Epochs/manifest.webmanifest');
+      const manifest = await response.json();
 
-    // Use the short_name from the manifest as part of the cache name
-    CACHE_NAME = `cache-${manifest.short_name}`;
-
-    const cache = await caches.open(CACHE_NAME);
-    cache.addAll([
-      '/RSI-Waves2Epochs/',
-      '/RSI-Waves2Epochs/index.html',
-      '/RSI-Waves2Epochs/offline.html',
-      '/RSI-Waves2Epochs/js/content.js',
-      '/RSI-Waves2Epochs/css/styles.css',
-      '/RSI-Waves2Epochs/css/footer.css',
-      OFFLINE_URL
-    ]);
+      const cache = await caches.open(CACHE_NAME);
+      await cache.addAll([
+        '/RSI-Waves2Epochs/',
+        '/RSI-Waves2Epochs/index.html',
+        '/RSI-Waves2Epochs/offline.html',
+        '/RSI-Waves2Epochs/js/content.js',
+        '/RSI-Waves2Epochs/css/styles.css',
+        '/RSI-Waves2Epochs/css/footer.css',
+        OFFLINE_URL
+      ]);
+    } catch (err) {
+      console.error('Error during service worker installation:', err);
+    }
   })());
 });
 
