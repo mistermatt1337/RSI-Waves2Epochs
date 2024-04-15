@@ -6,8 +6,7 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     try {
       // Fetch the manifest file
-      const baseUrl = location.href;
-      const response = await fetch(new URL('/RSI-Waves2Epochs/manifest.webmanifest', baseUrl));
+      const response = await fetch(new URL('/RSI-Waves2Epochs/manifest.webmanifest'));
       const manifest = await response.json();
 
       const cache = await caches.open(CACHE_NAME);
@@ -36,14 +35,7 @@ self.addEventListener('fetch', event => {
       const cache = await caches.open(CACHE_NAME);
       cache.put(event.request, fetchResponse.clone());
 
-      // Create a new response with the 'x-content-type-options' header
-      const responseWithHeader = new Response(fetchResponse.body, {
-        status: fetchResponse.status,
-        statusText: fetchResponse.statusText,
-        headers: { 'x-content-type-options': 'nosniff' }
-      });
-
-      return responseWithHeader;
+      return fetchResponse;
     } catch (e) {
       // The network request failed, try to get the result from the cache
       const cache = await caches.open(CACHE_NAME);
