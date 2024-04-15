@@ -42,10 +42,11 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/RSI-Waves2Epochs/sw.js', {scope: '/RSI-Waves2Epochs/'}).then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope); // Successful registration
+                const scope = location.hostname === 'sc-open.github.io' ? '/RSI-Waves2Epochs/' : '/';
+                navigator.serviceWorker.register('sw.js', {scope: scope}).then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
                 }, function(err) {
-                    console.log('ServiceWorker registration failed: ', err); // Failed registration
+                    console.log('ServiceWorker registration failed: ', err);
                 });
             });
         }

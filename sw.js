@@ -6,13 +6,14 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     try {
       // Fetch the manifest file
-      const response = await fetch(new URL('/RSI-Waves2Epochs/manifest.webmanifest'));
+      const response = await fetch('/RSI-Waves2Epochs/manifest.webmanifest');
       const manifest = await response.json();
 
       const cache = await caches.open(CACHE_NAME);
       await cache.addAll([
         '/RSI-Waves2Epochs/',
         OFFLINE_URL,
+        '/RSI-Waves2Epochs/index.html',
         '/RSI-Waves2Epochs/js/content.js',
         '/RSI-Waves2Epochs/css/styles.css',
         '/RSI-Waves2Epochs/css/footer.css'
@@ -28,20 +29,16 @@ self.addEventListener('fetch', event => {
     try {
       // Try to get the response from the network
       const fetchResponse = await fetch(event.request);
-      
       // If the fetch was successful, put the new resource in the cache
       const cache = await caches.open(CACHE_NAME);
       const cachePut = cache.put(event.request, fetchResponse.clone());
-
       // Use event.waitUntil() to wait for the caching operation to complete
       event.waitUntil(cachePut);
-
       return fetchResponse;
     } catch (e) {
       // The network request failed, try to get the result from the cache
       const cache = await caches.open(CACHE_NAME);
       const cachedResponse = await cache.match(event.request);
-
       if (cachedResponse) {
         // Return the cached response if available
         return cachedResponse;
