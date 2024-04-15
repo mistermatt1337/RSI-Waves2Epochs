@@ -4,12 +4,12 @@
     "name": "Waves2Epochs by SC-Open.dev",
     "short_name": "Waves2Epochs",
     "description": "An SC-Open.dev project Waves2Epochs is a simple JavaScript tool to convert RSI Waves Schedules into Discord compatible epochs.",
-    "start_url": "/",
+    "start_url": "/RSI-Waves2Epochs/",
     "background_color": "#000000",
     "theme_color": "#2f3d58",
     "orientation": "any",
     "display": "standalone",
-    "scope": "/",
+    "scope": "/RSI-Waves2Epochs/",
     "icons": [
         {
             "src": "/RSI-Waves2Epochs/img/favicon-16x16.png",
