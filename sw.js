@@ -6,7 +6,8 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     try {
       // Fetch the manifest file
-      const response = await fetch('/RSI-Waves2Epochs/manifest.webmanifest');
+      const baseUrl = location.href;
+      const response = await fetch(new URL('/RSI-Waves2Epochs/manifest.webmanifest', baseUrl));
       const manifest = await response.json();
 
       const cache = await caches.open(CACHE_NAME);
