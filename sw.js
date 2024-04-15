@@ -6,12 +6,12 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     cache.addAll([
-      '/',
-      '/index.html',
-      '/offline.html',
-      '/js/content.js',
-      '/css/styles.css',
-      '/css/footer.css',
+      '/RSI-Waves2Epochs/',
+      '/RSI-Waves2Epochs/index.html',
+      '/RSI-Waves2Epochs/offline.html',
+      '/RSI-Waves2Epochs/js/content.js',
+      '/RSI-Waves2Epochs/css/styles.css',
+      '/RSI-Waves2Epochs/css/footer.css',
       OFFLINE_URL
     ]);
   })());
