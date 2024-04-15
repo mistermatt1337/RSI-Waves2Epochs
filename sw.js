@@ -1,9 +1,16 @@
-const CACHE_NAME = `rsi-waves2epochs-v0.2`;
+let CACHE_NAME = `rsi-waves2epochs`;
 const OFFLINE_URL = `/offline.html`;
 
 // Use the install event to pre-cache all initial resources.
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
+    // Fetch the manifest file
+    const response = await fetch('/RSI-Waves2Epochs/manifest.webmanifest');
+    const manifest = await response.json();
+
+    // Use the short_name from the manifest as part of the cache name
+    CACHE_NAME = `cache-${manifest.short_name}`;
+
     const cache = await caches.open(CACHE_NAME);
     cache.addAll([
       '/RSI-Waves2Epochs/',
@@ -27,7 +34,14 @@ self.addEventListener('fetch', event => {
       const cache = await caches.open(CACHE_NAME);
       cache.put(event.request, fetchResponse.clone());
 
-      return fetchResponse;
+      // Create a new response with the 'x-content-type-options' header
+      const responseWithHeader = new Response(fetchResponse.body, {
+        status: fetchResponse.status,
+        statusText: fetchResponse.statusText,
+        headers: { 'x-content-type-options': 'nosniff' }
+      });
+
+      return responseWithHeader;
     } catch (e) {
       // The network request failed, try to get the result from the cache
       const cache = await caches.open(CACHE_NAME);

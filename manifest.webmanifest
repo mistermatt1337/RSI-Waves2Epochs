@@ -8,7 +8,7 @@
     "theme_color": "#2f3d58",
     "orientation": "any",
     "display": "standalone",
-    "scope": "/",    
+    "scope": "/",
     "icons": [
         {
             "src": "/RSI-Waves2Epochs/img/favicon-16x16.png",
