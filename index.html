@@ -42,7 +42,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js', {scope: '/RSI-Waves2Epochs/'}).then(function(registration) {
+                navigator.serviceWorker.register('/RSI-Waves2Epochs/sw.js', {scope: '/RSI-Waves2Epochs/'}).then(function(registration) {
                     console.log('ServiceWorker registration successful with scope: ', registration.scope); // Successful registration
                 }, function(err) {
                     console.log('ServiceWorker registration failed: ', err); // Failed registration
