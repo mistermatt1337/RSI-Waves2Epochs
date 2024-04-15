@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="img/favicon-512x512.png">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/footer.css">
-<link rel="manifest" href="/manifest.webmanifest">
+<link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
     <div id="appArea">
@@ -40,9 +40,9 @@
     </footer>
     <script src="js/content.js"></script>
     <script>
-        if('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/sw.js', { scope: '/' });
-        }
-        </script>
+            if('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/RSI-Waves2Epochs/sw.js', { scope: '/RSI-Waves2Epochs/' });
+            }
+    </script>
 </body>
 </html>
