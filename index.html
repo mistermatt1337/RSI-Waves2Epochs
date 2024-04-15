@@ -40,15 +40,15 @@
     </footer>
     <script src="js/content.js"></script>
     <script>
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope); // Successful registration
-                    }, function(err) {
-                        console.log('ServiceWorker registration failed: ', err); // Failed registration
-                    });
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js', {scope: '/RSI-Waves2Epochs/'}).then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope); // Successful registration
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err); // Failed registration
                 });
-            }
+            });
+        }
     </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 const CACHE_NAME = `rsi-waves2epochs`;
-const OFFLINE_URL = `/offline.html`;
+const OFFLINE_URL = `/RSI-Waves2Epochs/offline.html`;
 
 // Use the install event to pre-cache all initial resources.
 self.addEventListener('install', event => {
@@ -12,12 +12,10 @@ self.addEventListener('install', event => {
       const cache = await caches.open(CACHE_NAME);
       await cache.addAll([
         '/RSI-Waves2Epochs/',
-        '/RSI-Waves2Epochs/index.html',
-        '/RSI-Waves2Epochs/offline.html',
+        OFFLINE_URL,
         '/RSI-Waves2Epochs/js/content.js',
         '/RSI-Waves2Epochs/css/styles.css',
-        '/RSI-Waves2Epochs/css/footer.css',
-        OFFLINE_URL
+        '/RSI-Waves2Epochs/css/footer.css'
       ]);
     } catch (err) {
       console.error('Error during service worker installation:', err);
@@ -49,7 +47,7 @@ self.addEventListener('fetch', event => {
         return cachedResponse;
       } else {
         // If the requested resource is not in the cache, try to serve index.html
-        const cachedIndex = await cache.match('/index.html');
+        const cachedIndex = await cache.match('/RSI-Waves2Epochs/index.html');
         if (cachedIndex) {
           return cachedIndex;
         } else {
