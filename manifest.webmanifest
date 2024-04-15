@@ -11,23 +11,23 @@
     "scope": "/RSI-Waves2Epochs/",    
     "icons": [
         {
-            "src": "/img/favicon-16x16.png",
+            "src": "/RSI-Waves2Epochs/img/favicon-16x16.png",
             "sizes": "16x16"
         },
         {
-            "src": "/img/favicon-32x32.png",
+            "src": "/RSI-Waves2Epochs/img/favicon-32x32.png",
             "sizes": "32x32"
         },
         {
-            "src": "/img/favicon-64x64.png",
+            "src": "/RSI-Waves2Epochs/img/favicon-64x64.png",
             "sizes": "64x64"
         },
         {
-            "src": "/img/favicon-256x256.png",
+            "src": "/RSI-Waves2Epochs/img/favicon-256x256.png",
             "sizes": "256x256"
         },
         {
-            "src": "/img/favicon-512x512.png",
+            "src": "/RSI-Waves2Epochs/img/favicon-512x512.png",
             "sizes": "512x512"
         }
     ]
