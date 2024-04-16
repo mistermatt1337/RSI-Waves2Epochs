@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: Waves2Epochs
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+authors:
+  - name: SC-Open
+    website: "https://www.sc-open.dev"
+    alias: sc-open
+  - alias: mistermatt1337
+    affiliation: SC-Open
+    email: mistermatt1337@outlook.com
+repository-code: "https://github.com/SC-Open/RSI-Waves2Epochs/"
+url: "https://sc-open.github.io/RSI-Waves2Epochs/"
+abstract: "An SC-Open.dev project Waves2Epochs is a simple JavaScript tool to convert RSI Waves Schedules into Discord compatible epochs."
+keywords:
+  - Waves2Epochs
+  - RSI-Waves2Epochs
+  - SC-Open
+license: MIT
+commit: 189f821
+version: 'v0.2-beta'
+date-released: '2024-04-15'
