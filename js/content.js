@@ -116,4 +116,4 @@ function modal(openModal, closeModal) {
     } else if (closeModal) {
         modal.style.display = 'none';
     }
-}
+});
