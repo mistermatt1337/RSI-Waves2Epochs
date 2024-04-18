@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Convert your Star Citizen wave schedule to Discord Epochs">
+<meta name="author" content="SC-Open.dev">
+<meta name="keywords" content="Star Citizen, SC, SC-Open, SC-Open.dev, SCOpen, SCOpen.dev, SC-Open Star Citizen, SC-Open Star Citizen, SC-Open.dev Star Citizen, SC-Open.dev Star Citizen, SCOpen Star Citizen, SCOpen Star Citizen, SCOpen.dev Star Citizen, SCOpen.dev Star Citizen, SC-Open Waves2Epochs, SC-Open Waves to Epochs, SC-Open.dev Waves2Epochs, SC-Open.dev Waves to Epochs, SCOpen Waves2Epochs, SCOpen Waves to Epochs, SCOpen.dev Waves2Epochs, SCOpen.dev Waves to Epochs, SC-Open Wave Schedule, SC-Open.dev Wave Schedule, SCOpen Wave Schedule, SCOpen.dev Wave Schedule, SC-Open Wave Schedule to Discord Epochs, SC-Open.dev Wave Schedule to Discord Epochs, SCOpen Wave Schedule to Discord Epochs, SCOpen.dev Wave Schedule to Discord Epochs, SC-Open Wave Schedule to Discord Epochs Converter, SC-Open.dev Wave Schedule to Discord Epochs Converter, SCOpen Wave Schedule to Discord Epochs Converter, SCOpen.dev Wave Schedule to Discord Epochs Converter, SC-Open Wave Schedule to Discord Epochs Conversion, SC-Open.dev Wave Schedule to Discord Epochs Conversion, SCOpen Wave Schedule to Discord Epochs Conversion, SCOpen.dev Wave Schedule to Discord Epochs Conversion, SC-Open Wave Schedule to Discord Epochs Convert, SC-Open.dev Wave Schedule to Discord Epochs Convert, SCOpen Wave Schedule to Discord Epochs Convert, SCOpen.dev Wave Schedule to Discord Epochs Convert, SC-Open Wave Schedule to Discord Epochs Converter, SC-Open.dev Wave Schedule to Discord Epochs Converter, SCOpen Wave Schedule to Discord Epochs Converter, SCOpen.dev Wave Schedule to Discord Epochs Converter, SC-Open Wave Schedule to Discord Epochs Conversion, SC-Open.dev Wave Schedule to Discord Epochs Conversion, SCOpen Wave Schedule to Discord Epochs Conversion, SCOpen.dev Wave Schedule to Discord Epochs Conversion, SC-Open Wave Schedule to Discord Epochs Convert, SC-Open.dev Wave Schedule to Discord Epochs Convert, SCOpen Wave Schedule to Discord Epochs Convert, SCOpen.dev Wave Schedule to Discord Epochs Convert, SC-Open Wave Schedule to Discord Epochs Converter, SC-Open.dev Wave Schedule to Discord Epochs Converter, SCOpen Wave Schedule to Discord Epochs">
 <title>Waves2Epochs by SC-Open.dev</title>
 <link rel="icon" type="image/png" sizes="16x16" href="./img/16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="./img/32.png">
@@ -13,35 +15,40 @@
 <link rel="icon" type="image/png" sizes="256x256" href="./img/256.png">
 <link rel="icon" type="image/png" sizes="512x512" href="./img/512.png">
 <link rel="apple-touch-icon" href="./img/512.png">
-<link rel="stylesheet" href="./css/styles.css">
-<link rel="stylesheet" href="./css/footer.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3-theme-blue-grey.css">
 <link rel="manifest" href="./manifest.webmanifest">
-</head>
-<body>
-    <div id="appArea">
-        <p id="label">Paste your copied wave schedule here:</p>
-        <textarea id="inputData" name="input" placeholder="Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD"></textarea>
-        <pre id="outputData"></pre>
-        <button type="button" id="actionButton" title="Convert UTC Waves to Discord Epochs">Convert</button>
-     </div>
-     <footer id="footer">
-        <button id="aboutButton" type="button">About</button>
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h1>Like what we're doing? </h1><p>Here are some ways you can show your appreciation</p>
-                <div id="badges">
-                    <object title="GitHub Organization Badge" data="https://img.shields.io/badge/SC--Open-gold?style=for-the-badge&link=https%3A%2F%2Fgithub.com%2FSC-Open" type="image/svg+xml"></object>
-                    <object title="GitHub Repo Badge" data="https://img.shields.io/badge/RSI--Waves2Epochs-blue?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FSC-Open%2FRSI-Waves2Epochs" type="image/svg+xml"></object>
-                    <object title="GitHub License Badge" data="https://img.shields.io/github/license/sc-open/RSI-Waves2Epochs?style=for-the-badge" type="image/svg+xml"></object>
-                    <object title="GitHub Sponsors Badge" data="https://img.shields.io/github/sponsors/mistermatt1337?style=for-the-badge&logo=githubsponsors&link=https%3A%2F%2Fbit.ly%2F3TP4yKD" type="image/svg+xml"></object>
-                    <object title="Patreon Sponsors Badge" data="https://img.shields.io/badge/Patreon-Support_us!-orange?style=for-the-badge&logo=patreon&link=https%3A%2F%2Fbit.ly%2FSCOpenDevPatreon" type="image/svg+xml"></object>
-                    <object title="RSI Referral Badge" data="https://img.shields.io/badge/RSI-Enlist_now!-blue?style=for-the-badge&logo=spaceship&link=https%3A%2F%2Fbit.ly%2FSCBonus5K" type="image/svg+xml"></object>
-                    <object title="Discord Badge" data="https://img.shields.io/discord/1113924866580684911?style=for-the-badge&logo=discord&logoColor=white&label=SC%20Open&color=gold&link=https%3A%2F%2Fbit.ly%2FSCOpen-Discord" type="image/svg+xml"></object>
-                </div>
+<body class="w3-dark-grey w3-center">
+    <div class=" w3-display-container w3-content w3-margin-top">
+        <div class="w3-container w3-padding-16 w3-center w3-card-4 w3-center w3-blue-grey w3-round-large" id="appArea">
+            <object class="w3-center w3-margin w3-hover-shadow" title="GitHub Repo Badge" data="https://img.shields.io/badge/waves2epochs-by_sc--open-gold?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FSC-Open%2FRSI-Waves2Epochs" type="image/svg+xml"></object>
+            <p class="w3-margin" id="label">Paste your copied wave schedule here:</p>
+            <div class="w3-col " id="inputArea">
+                <textarea class="w3-grey" rows="4" cols="30" id="inputData" name="input" placeholder="Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD"></textarea>
             </div>
+            <div class="w3-col" id="outputArea">
+                <pre class="w3-grey" id="outputData"></pre>
+            </div>
+            <button class="w3-btn w3-blue-grey" type="button" id="actionButton">Convert</button>
         </div>
-        <p id="disclaimer">This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners.</p>
+    </div>
+    <modal id="myModal" class="w3-modal w3-round-large">
+        <div class="w3-modal-content w3-padding-16 w3-auto w3-card-4 w3-center w3-dark-grey w3-animate-bottom" id="modal-content">
+            <h2 class="w3-margin-top">Like what we're doing?</h2>
+            <p>Here are some ways you can show your appreciation</p>
+            <div class="w3-row">
+                <object title="GitHub Sponsors Badge" data="https://img.shields.io/github/sponsors/mistermatt1337?style=for-the-badge&logo=githubsponsors&link=https%3A%2F%2Fbit.ly%2F3TP4yKD" type="image/svg+xml"></object>
+                <object title="Patreon Sponsors Badge" data="https://img.shields.io/badge/Patreon-Support_us!-orange?style=for-the-badge&logo=patreon&link=https%3A%2F%2Fbit.ly%2FSCOpenDevPatreon" type="image/svg+xml"></object>
+                <object title="RSI Referral Badge" data="https://img.shields.io/badge/RSI-Enlist_now!-blue?style=for-the-badge&logo=spaceship&link=https%3A%2F%2Fbit.ly%2FSCBonus5K" type="image/svg+xml"></object>
+                <object title="Discord Badge" data="https://img.shields.io/discord/1113924866580684911?style=for-the-badge&logo=discord&logoColor=white&label=SC%20Open&color=gold&link=https%3A%2F%2Fbit.ly%2FSCOpen-Discord" type="image/svg+xml"></object>
+                <object title="GitHub License Badge" data="https://img.shields.io/github/license/sc-open/RSI-Waves2Epochs?style=for-the-badge" type="image/svg+xml"></object>
+            </div>
+            <p class="w3-small w3-margin" id="disclaimer">This is an unofficial Star Citizen fansite, not affiliated with the Cloud Imperium group of companies. All content on this site not authored by its host or users are property of their respective owners.</p>
+            <button class="w3-btn w3-grey w3-margin-bottom" id="closeModal" type="button">Close</button>
+        </div>
+    </modal>
+    <footer class="w3-block w3-bottom w3-center w3-blue-grey w3-margin-top">
+            <button class="w3-btn w3-blue-grey w3-margin-bottom" id="aboutButton" type="button">About</button>
     </footer>
     <script src="js/content.js"></script>
     <script>

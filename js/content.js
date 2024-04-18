@@ -20,91 +20,94 @@ function convertWavesToEpochs(text) {
         return waveInfo + ': ' + formattedDate;
     });
     return formattedEpochs.join('\n');
-    }
-    function createNotification(message) {
-        const notification = document.createElement('div');
-        notification.innerText = message;
-        notification.classList.add('notification');
-        const existingNotifications = document.querySelectorAll('.notification').length;
-        const topPosition = 10 + (existingNotifications * 60); // Adjust the multiplier based on the height of your notifications
-        notification.style.top = `${topPosition}px`;
-        document.body.appendChild(notification);
-        setTimeout(() => {
-            document.body.removeChild(notification);
-            updateNotificationPositions();
-        }, 3000); // Hide after 3 seconds
-    }
-    function updateNotificationPositions() {
-        const notifications = document.querySelectorAll('.notification');
-        notifications.forEach((notification, index) => {
-            const topPosition = 10 + (index * 60); // Adjust the multiplier based on the height of your notifications
-            notification.style.top = `${topPosition}px`;
-        });
-    }
-    document.getElementById('actionButton').addEventListener('click', function(event) {
-        event.preventDefault();
-        console.log('actionButton clicked');
-        if (this.innerText.trim().toLowerCase() === 'convert') {
-            const text = document.getElementById('inputData').value;
-            if (text.trim() === '') {
-                createNotification('No text to convert!');
+}
+// Notification functions
+function createNotification(message) {
+    const notification = document.createElement('div');
+    notification.innerText = message;
+    notification.classList.add('w3-panel', 'w3-grey', 'w3-animate-top', 'app-notification');
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        document.body.removeChild(notification);
+    }, 3000); // Hide after 3 seconds
+}
+// Action button event listener for conversion and copying
+let actionButtonState = 'convert'; // Initialize the state
+
+document.getElementById('actionButton').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    if (actionButtonState === 'convert') {
+        const text = document.getElementById('inputData').value;
+        if (text.trim() === '') {
+            createNotification('Warning!\nNo text to convert!');
+        } else {
+            const output = convertWavesToEpochs(text);
+            if (output.trim() === '') {
+                createNotification('Warning!\nNo waves found!');
             } else {
-                const output = convertWavesToEpochs(text);
-                if (output.trim() === '') {
-                    createNotification('No waves found!');
+                document.getElementById('outputData').innerText = output;
+                createNotification('Success!\nConversion completed!');
+                document.getElementById('inputArea').style.display = 'none';
+                document.getElementById('inputData').value = '';
+                document.getElementById('outputArea').style.display = 'block';
+                this.innerText = 'Copy';
+                this.title = 'Copy converted wave schedule to clipboard';
+                document.getElementById('label').innerText = 'Your converted wave schedule:';                       
+                actionButtonState = 'copy'; // Update the state
+            }
+        }
+    } else if (actionButtonState === 'copy') {
+        const outputText = document.getElementById('outputData');
+        if (outputText.innerText.trim() === '') {
+            createNotification('Warning!\nNo text to copy!');
+        } else {
+            navigator.permissions.query({name: "clipboard-write"}).then(result => {
+                if (result.state === 'granted' || result.state === 'prompt') {
+                    navigator.clipboard.writeText(outputText.innerText).then(() => {
+                        createNotification('Success!\nCopied to clipboard!');
+                        this.innerText = 'Reset';
+                        this.title = 'Reset the form to convert another wave schedule';
+                        actionButtonState = 'reset'; // Update the state
+                    }).catch(error => {
+                        console.error('Error writing to clipboard: ', error);
+                        createNotification('Warning!\nFailed to copy to clipboard!');
+                    });
                 } else {
-                    document.getElementById('outputData').innerText = output;
-                    createNotification('Conversion completed!');                 
-                    document.getElementById('inputData').style.display = 'none';
-                    document.getElementById('inputData').value = '';
-                    document.getElementById('outputData').style.display = 'block';
-                    this.innerText = 'Copy';
-                    this.title = 'Copy converted wave schedule to clipboard';
-                    document.getElementById('label').innerText = 'Your converted wave schedule:';                       
+                    console.error('Clipboard access denied!');
+                    createNotification('Warning!\nNo permission to write to clipboard!');
                 }
-            }
-        } else if (this.innerText.trim().toLowerCase() === 'copy') {
-            const outputText = document.getElementById('outputData');
-            if (outputText.innerText.trim() === '') {
-                createNotification('No text to copy!');
-            } else {
-                navigator.clipboard.writeText(outputText.innerText).then(() => {
-                    createNotification('Copied to clipboard!');
-                    document.getElementById('outputData').style.display = 'none';
-                    document.getElementById('outputData').innerText = '';
-                    document.getElementById('inputData').style.display = 'block';
-                    this.innerText = 'Convert';
-                    this.title = 'Converted wave schedule to Discord Epochs';
-                    document.getElementById('label').innerText = 'Paste your copied wave schedule here:';
-                }).catch(error => {
-                    // Handle the error here
-                    console.error('Error writing to clipboard: ', error);
-                    createNotification('Failed to copy to clipboard!');
-                });
-            }
+            });
         }
-    });
-    document.getElementById('aboutButton').addEventListener('click', function() {
-        openModal();
-    });
-    function openModal() {
-        console.log('openModal');
-        var modal = document.getElementById("myModal");
-        var span = document.getElementsByClassName("close")[0];
-        modal.style.display = "block";
-        span.addEventListener('click', function() {
-            closeModal(modal);
-        });
-        window.addEventListener('click', function(event) {
-            closeOnOutsideClick(event, modal);
-        });
+    } else if (actionButtonState === 'reset') {
+        document.getElementById('outputArea').style.display = 'none';
+        document.getElementById('outputData').innerText = '';
+        document.getElementById('inputArea').style.display = 'block';
+        this.innerText = 'Convert';
+        this.title = 'Convert wave schedule to Discord Epochs';
+        document.getElementById('label').innerText = 'Paste your copied wave schedule here:';
+        actionButtonState = 'convert'; // Update the state
     }
-    function closeModal(modal) {
-        modal.style.display = "none";
+});
+// About button event listener for modal
+document.getElementById('aboutButton').addEventListener('click', function() {
+    modal(openModal = true, closeModal = false);
+});
+// Modal functions
+function modal(openModal, closeModal) {
+    var modal = document.getElementById("myModal");
+    var span = document.getElementById("closeModal");
+    if (openModal) {
+        modal.style.display = 'block';
+        span.onclick = function() {
+            modal.style.display = 'none';
+        };
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
+    } else if (closeModal) {
+        modal.style.display = 'none';
     }
-    function closeOnOutsideClick(event, modal) {
-        if (event.target == modal) {
-            event.stopPropagation();
-            modal.style.display = "none";
-        }
-    }
+}
