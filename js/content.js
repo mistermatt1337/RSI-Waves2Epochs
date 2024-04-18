@@ -93,21 +93,27 @@ document.getElementById('actionButton').addEventListener('click', function(event
 document.getElementById('aboutButton').addEventListener('click', function() {
     modal(openModal = true, closeModal = false);
 });
+
 // Modal functions
 function modal(openModal, closeModal) {
     var modal = document.getElementById("myModal");
     var span = document.getElementById("closeModal");
+
+    // Close button event handler
+    span.onclick = function() {
+        modal.style.display = 'none';
+    };
+
+    // Click outside modal event handler
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    };
+
     if (openModal) {
         modal.style.display = 'block';
-        span.onclick = function() {
-            modal.style.display = 'none';
-        };
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        };
     } else if (closeModal) {
         modal.style.display = 'none';
     }
-}
+});
