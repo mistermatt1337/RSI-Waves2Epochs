@@ -1,27 +1,20 @@
-const CACHE_NAME = `rsi-waves2epochs`;
+// PWA Service Worker
+const CACHE_NAME = `${self.location.pathname}`;
 
-// Use the install event to pre-cache all initial resources.
+// PWA Install Functionality
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     try {
       // Fetch the manifest file
-      const response = await fetch('./manifest.webmanifest');
-      const manifest = await response.json();
+      const manifestResponse = await fetch('./manifest.webmanifest');
+      const manifest = await manifestResponse.json();
+
+      // Extract the resources you want to cache from the manifest
+      const resources = [manifest.start_url, ...manifest.icons.map(icon => icon.src)];
 
       const cache = await caches.open(CACHE_NAME);
-      await cache.addAll([
-        './index.html',
+      await cache.addAll([...resources, 
         './js/content.js',
-        './css/styles.css',
-        './css/footer.css',
-        './img/16.png',
-        './img/32.png',
-        './img/48.png',
-        './img/64.png',
-        './img/128.png',
-        './img/192.png',
-        './img/256.png',
-        './img/512.png',
         'https://img.shields.io/badge/SC--Open-gold?style=for-the-badge&link=https%3A%2F%2Fgithub.com%2FSC-Open',
         'https://img.shields.io/badge/RSI--Waves2Epochs-blue?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FSC-Open%2FRSI-Waves2Epochs',
         'https://img.shields.io/github/license/sc-open/RSI-Waves2Epochs?style=for-the-badge',
@@ -37,6 +30,9 @@ self.addEventListener('install', event => {
 });
 
 async function evaluateAndCache(request, event) {
+  // Fetch and parse the manifest.json file
+  const manifestResponse = await fetch('./manifest.webmanifest');
+  const manifest = await manifestResponse.json();
   // Use event if provided, otherwise use the global event
   event = event || self;
   // Try to get the response from the network
@@ -78,6 +74,12 @@ async function evaluateAndCache(request, event) {
     case 'png':
       contentType = 'image/png';
       break;
+    case 'json':
+        contentType = 'application/json';
+      break;
+    case 'webmanifest':
+        contentType = 'application/manifest+json';
+      break;
     // Add more cases as needed
   }
   // This code seeks to solve some content header issues
@@ -90,6 +92,7 @@ async function evaluateAndCache(request, event) {
   return newResponse;
 }
 
+// PWA Offline Functionality
 self.addEventListener('fetch', event => {
   event.respondWith((async () => {
     try {
@@ -113,10 +116,10 @@ self.addEventListener('fetch', event => {
   })());
 });
 
-// Background Sync Functionality
+// Use with Sync Functionality
 async function fetchNewContent(event) {
   // Fetch and parse the manifest.json file
-  const manifestResponse = await fetch('./manifest.json');
+  const manifestResponse = await fetch('./manifest.webmanifest');
   const manifest = await manifestResponse.json();
 
   // Extract the resources you want to fetch from the manifest
@@ -127,16 +130,36 @@ async function fetchNewContent(event) {
   // Fetch all resources in parallel
   await Promise.all(resources.map(async resource => {
     try {
-      const request = new Request(resource);
+      const request = new Request(self.location.pathname + resource);
       await evaluateAndCache(request, event);
     } catch (e) {
       console.error(`Failed to fetch ${resource}: ${e}`);
     }
   }));
 }
-
+// PWA Background Sync Functionality
 self.addEventListener('sync', (event) => {
   if (event.tag === 'fetch-new-content') {
     event.waitUntil(fetchNewContent(event));
   }
+});
+// PWA Periodic Sync Functionality
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'fetch-new-content') {
+    event.waitUntil(fetchNewContent(event));
+  }
+});
+// Cleanup old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (CACHE_NAME !== cacheName) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim()) // Claim the clients to make sure the active service worker is used
+  );
 });
