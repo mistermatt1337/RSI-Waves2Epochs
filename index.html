@@ -24,10 +24,10 @@
             <object class="w3-center w3-margin w3-hover-shadow" title="GitHub Repo Badge" data="https://img.shields.io/badge/waves2epochs-by_sc--open-gold?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FSC-Open%2FRSI-Waves2Epochs" type="image/svg+xml"></object>
             <p class="w3-margin" id="label">Paste your copied wave schedule here:</p>
             <div class="w3-col " id="inputArea">
-                <textarea class="w3-grey" rows="4" cols="30" id="inputData" name="input" placeholder="Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD"></textarea>
+                <textarea class="w3-auto" rows="4" cols="30" id="inputData" name="input" placeholder="Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD&#10;Wave # HHMM UTC - Month DD"></textarea>
             </div>
             <div class="w3-col" id="outputArea">
-                <pre class="w3-grey" id="outputData"></pre>
+                <pre class="w3-auto" id="outputData"></pre>
             </div>
             <button class="w3-btn w3-blue-grey" type="button" id="actionButton">Convert</button>
         </div>
@@ -51,25 +51,6 @@
             <button class="w3-btn w3-blue-grey w3-margin-bottom" id="aboutButton" type="button">About</button>
     </footer>
     <script src="js/content.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                const scope = location.hostname === 'sc-open.github.io' ? '/RSI-Waves2Epochs/' : '/';
-                navigator.serviceWorker.register(scope + 'sw.js', {scope: scope}).then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    
-                    // Register background sync
-                    registration.sync.register('fetch-new-content').then(() => {
-                        console.log('Background Sync registered');
-                    }, function(err) {
-                        console.log('Background Sync registration failed: ', err);
-                    });
-    
-                }, function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
-    </script>
+    <script src="register-sw.js"></script>
 </body>
 </html>
